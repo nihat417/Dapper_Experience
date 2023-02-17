@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Reflection.Metadata;
 
 namespace Dupper_Experience
 {
@@ -81,6 +82,34 @@ namespace Dupper_Experience
             dataTable.Load(reader);
             dataGridView1.DataSource= dataTable;
             dataGridView1.Refresh();
+        }
+
+        private void edit_btn_Click(object sender, EventArgs e)
+        {
+            
+            string name = dataGridView1.CurrentRow.Cells["Name"].Value.ToString();
+            int page = Convert.ToInt32(dataGridView1.CurrentRow.Cells["Page"].Value);
+            string author = dataGridView1.CurrentRow.Cells["Author"].Value.ToString();
+            decimal price = Convert.ToDecimal(dataGridView1.CurrentRow.Cells["Price"].Value);
+            int stock= Convert.ToInt32(dataGridView1.CurrentRow.Cells["Stock"].Value);
+
+
+            var parameters = new DynamicParameters();
+            
+            parameters.Add("@Name", name);
+            parameters.Add("@Page", page);
+            parameters.Add("@Author", author);
+            parameters.Add("@Price", price);
+            parameters.Add("@Stock", stock);
+            
+
+
+            connection.Execute("sp_AddBook", parameters, commandType: CommandType.StoredProcedure);
+
+            
+
+            
+            connection.Close();
         }
     }
 }

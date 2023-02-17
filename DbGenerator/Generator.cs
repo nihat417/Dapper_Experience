@@ -40,7 +40,15 @@ public class Generator
 							INSERT INTO [BOOK] VALUES('book2', 15, 'Author2', 2, 14);
 							INSERT INTO [BOOK] VALUES('book3', 35, 'Author3', 3, 11);
 							INSERT INTO [BOOK] VALUES('book4', 65, 'Author4', 4, 11);");
-		}
+            sqlConnection.Execute(@"
+							
+							CREATE PROCEDURE [dbo].[sp_AddBook] ( @Name nvarchar(100), @Page int, @Author nvarchar(max), @Price int,@Stock int)
+							AS
+							BEGIN
+							    INSERT INTO Book (Name, Page, Author, Price,Stock)
+							    VALUES (@Name, @Page, @Author, @Price,@Stock)
+							END");
+        }
 		else
             Console.WriteLine($"The database already exists.");
 		sqlConnection?.Close();
